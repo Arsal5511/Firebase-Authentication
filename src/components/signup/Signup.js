@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import "./signup.css";
 import InputControl from '../inputs/InputControl'
-import { Link } from 'react-router-dom'
-import {createUserWithEmailAndPassword} from "firebase/auth"
+import { Link, useNavigate } from 'react-router-dom'
+import {createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
 
 import { auth } from '../../firebase'
 
 
 function Signup() {
 
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         name:"",
         email: "",
@@ -16,6 +17,8 @@ function Signup() {
     });
 
     const [error, seterror] = useState("");
+    const [disableSubmitBtn, setDisableSubmitBtn] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = () => {
         if (!values.email || !values.pass || !values.name) {
@@ -24,11 +27,26 @@ function Signup() {
         }
         seterror("")
 
+        setDisableSubmitBtn(true)
+        setLoading(true)
         createUserWithEmailAndPassword(auth, values.email, values.pass).then(
-          (res)=>{
-            console.log(res)
+          async (res)=>{
+            setDisableSubmitBtn(false)
+            setLoading(false)
+             
+            const user = res.user;
+            updateProfile(user, {
+              displayName: values.name
+            })
+            await navigate('/')
           }
-        ).catch((err)=>console.log('error', err))
+
+
+        ).catch((err)=>{
+          setDisableSubmitBtn(false)
+          setLoading(false)
+          seterror(err.message)
+        })
         }
   return (
     <div className="signup_container">
@@ -63,8 +81,8 @@ function Signup() {
 
       <div className="footer">
         <b className="error">{error}</b>
-        <button onClick={handleSubmit} >
-          Sign Up
+        <button onClick={handleSubmit} disabled={disableSubmitBtn} >
+         {loading ? '...' :  'Sign Up'}
         </button>
         <p>
           Already have an account?{" "}

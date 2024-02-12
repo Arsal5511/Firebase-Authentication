@@ -1,9 +1,45 @@
-import React from 'react'
-import "./login.css";
+import React, { useState } from 'react'
 import InputControl from '../inputs/InputControl'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
+
+import "./login.css";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [values, setValues] = useState({
+      email: "",
+      pass: ""
+  });
+
+  const [error, seterror] = useState("");
+  const [disableSubmitBtn, setDisableSubmitBtn] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = () => {
+      if (!values.email || !values.pass) {
+          seterror("All fields are required")
+          return;
+      }
+      seterror("")
+
+      setDisableSubmitBtn(true)
+      setLoading(true)
+      signInWithEmailAndPassword(auth, values.email, values.pass).then(
+        async (res)=>{
+          setDisableSubmitBtn(false)
+          setLoading(false)
+          await navigate('/')
+        }
+
+
+      ).catch((err)=>{
+        setDisableSubmitBtn(false)
+        setLoading(false)
+        seterror(err.message)
+      })
+      }
   return (
     <div className="login_container">
     <div className="innerBox">
@@ -11,24 +47,26 @@ const Login = () => {
 
       <InputControl
         label="Email"
-        // onChange={(event) =>
-        //   setValues((prev) => ({ ...prev, email: event.target.value }))
-        // }
+        type="email"
+        onChange={(event) =>
+          setValues((prev) => ({ ...prev, email: event.target.value }))
+        }
         placeholder="Enter email address"
       />
      
       <InputControl
         label="Password"
-        // onChange={(event) =>
-        //   setValues((prev) => ({ ...prev, pass: event.target.value }))
-        // }
+        type="password"
+        onChange={(event) =>
+          setValues((prev) => ({ ...prev, pass: event.target.value }))
+        }
         placeholder="Enter Password"
       />
 
       <div className="footer">
-        <b className="error"></b>
-        <button >
-          Log in
+        <b className="error">{error}</b>
+        <button onClick={handleSubmit} disabled={disableSubmitBtn} >
+         {loading ? '...' : 'Login'}
         </button>
         <p>
           Don't have an account?{" "}

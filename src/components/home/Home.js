@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SignOut from "../signout/SignOut";
 
 const Home = (props) => {
+
   return (
     <>
-      <div>
+      <div style={{display:'flex', justifyContent:'center'}}>
         <h1>
           <Link to="/login">Login</Link>
         </h1>
@@ -16,7 +18,8 @@ const Home = (props) => {
       <br />
       <br />
       <br />
-      <h2>{props.name ? `Welcome ${props.name}` : "Login Please"}</h2>
+      <h2>{props.name ? `WELCOME - ${props.name}` : "Login Please"}</h2>
+      <h2>{props.name ? <SignOut /> : ''}</h2>
     </>
   );
 };
