@@ -5,7 +5,7 @@ function InputControl(props) {
   return (
     <div className="input_container">
       {props.label && <label>{props.label}</label>}
-      <input type="text" {...props} />
+      <input type={props.type} {...props} />
     </div>
   )
 }
