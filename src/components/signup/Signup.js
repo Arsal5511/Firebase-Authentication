@@ -89,6 +89,10 @@ function Signup() {
           <span>
             <Link to="/login">Login</Link>
           </span>
+          <span> | </span>
+          <span>
+            <Link to="/">Home</Link>
+          </span>
         </p>
       </div>
     </div>

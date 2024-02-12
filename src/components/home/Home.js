@@ -3,23 +3,31 @@ import { Link } from "react-router-dom";
 import SignOut from "../signout/SignOut";
 
 const Home = (props) => {
-
   return (
     <>
-      <div style={{display:'flex', justifyContent:'center' , flexDirection:'column'}}>
-        <h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          textAlign: "center",
+        }}
+      >
+        <h2>
           <Link to="/login">Login</Link>
-        </h1>
-        <h1>
+        </h2>
+        <h2>
           <Link to="/signup">Signup</Link>
-        </h1>
-      </div>
+        </h2>
 
-      <br />
-      <br />
-      <br />
-      <h2>{props.name ? `WELCOME - ${props.name}` : "Login Please"}</h2>
-      <h2>{props.name ? <SignOut /> : ''}</h2>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <h1>{props.name ? `WELCOME - ${props.name}` : "LOGIN PLEASE!"}</h1>
+        <h2>{props.name ? <SignOut /> : ""}</h2>
+      </div>
     </>
   );
 };
