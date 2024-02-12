@@ -6,7 +6,7 @@ const Home = (props) => {
 
   return (
     <>
-      <div style={{display:'flex', justifyContent:'center'}}>
+      <div style={{display:'flex', justifyContent:'center' , flexDirection:'column'}}>
         <h1>
           <Link to="/login">Login</Link>
         </h1>
